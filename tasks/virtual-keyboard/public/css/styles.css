@@ -1,0 +1,125 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: #e8e8e8;
+  font-family: "roboto", sans-serif;
+}
+
+main {
+  min-height: 100%;
+  display: flex;
+}
+
+.wrapper {
+  width: 980px;
+  margin: auto;
+}
+
+.output {
+  width: 100%;
+  height: 120px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #e2e3e3;
+  border-radius: 3px;
+  box-shadow: inset 1px 1px 10px -7px #2e2e2e;
+  resize: none;
+  outline: none;
+}
+
+.notes {
+  text-align: center;
+  color: #4a4a4a;
+  font-size: 12px;
+}
+
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 -5px;
+}
+.keyboard-btn {
+  position: relative;
+  min-width: 55px;
+  height: 55px;
+  margin: 5px;
+  padding: 0 8px;
+  background-color: #fcfcfc;
+  color: #434343;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  cursor: pointer;
+  box-shadow: 5px 5px 15px -10px #bdbdbd;
+  transition: all 100ms ease-in-out;
+}
+.keyboard-btn::selection {
+  background: transparent;
+}
+.keyboard-btn:hover {
+  background-color: #7d7d7d;
+  color: #ebebeb;
+  border-color: #7d7977;
+  box-shadow: 5px 5px 15px -10px #4a4a4a;
+  transition: all 100ms ease-in-out;
+}
+.keyboard-btn.keyboard-btn--active, .keyboard-btn:active {
+  background-color: #4A4A4A;
+  color: #E3E3E3;
+  border-color: #43474A;
+  box-shadow: 5px 5px 15px -10px #4a4a4a;
+  transition: all 100ms ease-in-out;
+}
+.keyboard-btn__first {
+  font-size: 14px;
+}
+.keyboard-btn__first::selection {
+  background: transparent;
+}
+.keyboard-btn__second {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  font-size: 12px;
+}
+.keyboard-btn__second::selection {
+  background: transparent;
+}
+.keyboard-btn--shifted .keyboard-btn__second {
+  position: static;
+  font-size: 14px;
+}
+.keyboard-btn--shifted .keyboard-btn__second ~ .keyboard-btn__first {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  font-size: 12px;
+}
+.keyboard-btn--colored {
+  background-color: #cecfd3;
+  color: #151716;
+  border-color: #e2e3e3;
+}
+.keyboard-btn.to-upper-case {
+  text-transform: uppercase;
+}
+.keyboard-btn.backspace {
+  width: 130px;
+}
+.keyboard-btn.caps-lock {
+  width: 120px;
+}
+.keyboard-btn.enter {
+  width: 115px;
+}
+.keyboard-btn.left-shift {
+  width: 140px;
+}
+.keyboard-btn.space {
+  width: 410px;
+}
+
+/*# sourceMappingURL=styles.css.map */

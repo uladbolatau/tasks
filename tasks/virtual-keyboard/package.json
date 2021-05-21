@@ -1,0 +1,19 @@
+{
+  "name": "virtual-keyboard",
+  "version": "1.0.0",
+  "description": "Virtual keyboard",
+  "main": "index.html",
+  "scripts": {
+    "scss": "node node_modules/sass/sass.js --watch public/scss:public/css",
+    "browser": "browser-sync start --server 'public' --files '**/*.html, **/*.css, **/*.js'",
+    "lint": "eslint --fix public/**/*.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.26.14",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "sass": "^1.32.13"
+  }
+}
