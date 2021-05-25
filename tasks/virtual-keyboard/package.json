@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "description": "Virtual keyboard",
   "main": "index.html",
+  "eslintConfig": {
+    "extends": "airbnb-base",
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module"
+    }
+  },
   "scripts": {
     "scss": "node node_modules/sass/sass.js --watch public/scss:public/css",
     "browser": "browser-sync start --server 'public' --files '**/*.html, **/*.css, **/*.js'",

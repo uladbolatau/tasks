@@ -3,82 +3,81 @@ import RU from "./languages/ru.js";
 
 export class Keyboard {
   // localStorage naming
-  LS_LANG_NAME = "language";
-  LS_LANG_EN = "EN";
-  LS_LANG_RU = "RU";
-  LS_CAPS_NAME = "isCapsLock";
-  LS_CAPS_ON = "1";
-  LS_CAPS_OFF = "0";
+  #LS_LANG_NAME = "language";
+  #LS_LANG_EN = "EN";
+  #LS_LANG_RU = "RU";
+  #LS_CAPS_NAME = "isCapsLock";
 
   // Class names
-  insertKeyboardTo = "body";
-  mainTagName = "main";
-  wrapperClass = "wrapper";
-  outputClass = "output";
-  notesClass = "notes";
-  keyboardClass = "keyboard";
-  buttonClass = "keyboard-btn";
-  buttonColoredClass = "keyboard-btn--colored";
-  buttonActiveClass = "keyboard-btn--active";
-  buttonShiftedClass = "keyboard-btn--shifted";
-  buttonFirstClass = "keyboard-btn__first";
-  buttonSecondClass = "keyboard-btn__second";
+  #insertKeyboardTo = "body";
+  #mainTagName = "main";
+  #wrapperClass = "wrapper";
+  #outputClass = "output";
+  #notesClass = "notes";
+  #keyboardClass = "keyboard";
+  #buttonClass = "keyboard-btn";
+  #buttonColoredClass = "keyboard-btn--colored";
+  #buttonActiveClass = "keyboard-btn--active";
+  #buttonShiftedClass = "keyboard-btn--shifted";
+  #buttonFirstClass = "keyboard-btn__first";
+  #buttonSecondClass = "keyboard-btn__second";
 
   // Option names
-  KEY_OPTION_CODE = "code";
-  KEY_OPTION_SYMBOL = "symbol";
-  KEY_OPTION_ALT_SYMBOL = "symbol";
-  KEY_OPTION_IS_SHOW = "isShowMore";
-  KEY_OPTION_IS_COLORED = "isColored";
-  KEY_OPTION_CUSTOM_CLASSES = "customClasses";
-  KEY_OPTION_IS_LANG_SWITCH = "isLanguageSwitch";
+  #KEY_OPTION_CODE = "code";
+  #KEY_OPTION_SYMBOL = "symbol";
+  #KEY_OPTION_ALT_SYMBOL = "symbol";
+  #KEY_OPTION_IS_SHOW = "isShowMore";
+  #KEY_OPTION_IS_COLORED = "isColored";
+  #KEY_OPTION_CUSTOM_CLASSES = "customClasses";
+  #KEY_OPTION_IS_LANG_SWITCH = "isLanguageSwitch";
 
   // Custom texts
-  TEXT_CONSOLE_NO_REQURED_FIELD = `Keys doesn't contain requred fields (${this.KEY_OPTION_CODE}, ${this.KEY_OPTION_SYMBOL}). Please, check languages config.`;
-  NOTES_TEXT =
-    "Right Ctrl+Shift for language switching. Keyboard based on Windows.";
+  #TEXT_CONSOLE_NO_REQURED_FIELD = `Keys doesn't contain requred fields (${
+    this.#KEY_OPTION_CODE
+  }, ${this.#KEY_OPTION_SYMBOL}). Please, check languages config.`;
+  #NOTES_TEXT = "Right Ctrl+Shift for language switching. Keyboard based on Windows.";
 
   EN_KEYBOARD = Object.create(EN.KEYBOARD_LAYOUT);
   RU_KEYBOARD = Object.create(RU.KEYBOARD_LAYOUT);
-  KEYBOARD = undefined;
+  #KEYBOARD = undefined;
 
-  languageShitchBtnsList = [];
-  currentLanguage = undefined;
-  isCapsLock = undefined;
-  isShift = false;
-  isCtrl = false;
+  #languageShitchBtnsList = [];
+  #currentLanguage = undefined;
+  #isCapsLock = undefined;
+  #isShift = false;
+  #isCtrl = false;
 
   constructor() {
-    if (!localStorage.getItem(this.LS_LANG_NAME)) {
-      localStorage.setItem(this.LS_LANG_NAME, this.LS_LANG_EN);
+    if (!localStorage.getItem(this.#LS_LANG_NAME)) {
+      localStorage.setItem(this.#LS_LANG_NAME, this.#LS_LANG_EN);
     }
 
-    if (!localStorage.getItem(this.LS_CAPS_NAME)) {
-      localStorage.setItem(this.LS_CAPS_NAME, this.LS_CAPS_NAME_OFF);
+    if (!localStorage.getItem(this.#LS_CAPS_NAME)) {
+      localStorage.setItem(this.#LS_CAPS_NAME, "0");
     }
 
-    this.isCapsLock = !!(1 * localStorage.getItem(this.LS_CAPS_NAME));
-    this.currentLanguage = localStorage.getItem(this.LS_LANG_NAME);
-    this.KEYBOARD = this[`${this.currentLanguage}_KEYBOARD`];
-    this.KEYBOARD.forEach((btn) => {
+    this.#isCapsLock = !!(1 * localStorage.getItem(this.#LS_CAPS_NAME));
+    this.#currentLanguage = localStorage.getItem(this.#LS_LANG_NAME);
+    this.#KEYBOARD = this[`${this.#currentLanguage}_KEYBOARD`];
+    this.#KEYBOARD.forEach((btn) => {
       btn.isPressed = false;
     });
   }
 
   init() {
-    document.querySelector(this.insertKeyboardTo).append(this.getLayout());
+    document.querySelector(this.#insertKeyboardTo).append(this.getLayout());
     this.onKeys();
   }
 
   getLayout() {
-    let main = document.createElement(this.mainTagName);
+    let main = document.createElement(this.#mainTagName);
     let wrapper = document.createElement("div");
 
-    wrapper.classList.add(this.wrapperClass);
+    wrapper.classList.add(this.#wrapperClass);
     wrapper.append(
-      this.getGeneratedLayout("textarea", this.outputClass),
+      this.getGeneratedLayout("textarea", this.#outputClass),
       this.getKeyboardLayout(),
-      this.getGeneratedLayout("p", this.notesClass, this.NOTES_TEXT)
+      this.getGeneratedLayout("p", this.#notesClass, this.#NOTES_TEXT)
     );
     main.append(wrapper);
 
@@ -86,14 +85,14 @@ export class Keyboard {
   }
 
   refreshLayout() {
-    this.languageShitchBtnsList = [];
+    this.#languageShitchBtnsList = [];
 
-    document.querySelector(`.${this.keyboardClass}`).remove();
+    document.querySelector(`.${this.#keyboardClass}`).remove();
     document
-      .querySelector(`.${this.wrapperClass}`)
+      .querySelector(`.${this.#wrapperClass}`)
       .insertBefore(
         this.getKeyboardLayout(),
-        document.querySelector(`.${this.notesClass}`)
+        document.querySelector(`.${this.#notesClass}`)
       );
   }
 
@@ -122,71 +121,75 @@ export class Keyboard {
 
   getKeyboardLayout() {
     let keyboardLayout = document.createElement("div");
-    keyboardLayout.classList.add(this.keyboardClass);
+    keyboardLayout.classList.add(this.#keyboardClass);
 
-    this.KEYBOARD.forEach((btn, index) => {
+    this.#KEYBOARD.forEach((btn, index) => {
       if (
-        !btn.hasOwnProperty(this.KEY_OPTION_CODE) ||
-        !btn.hasOwnProperty(this.KEY_OPTION_SYMBOL)
+        !btn.hasOwnProperty(this.#KEY_OPTION_CODE) ||
+        !btn.hasOwnProperty(this.#KEY_OPTION_SYMBOL)
       ) {
-        throw new Error(this.TEXT_CONSOLE_NO_REQURED_FIELD);
+        throw new Error(this.#TEXT_CONSOLE_NO_REQURED_FIELD);
       }
 
       let newButton = document.createElement("button");
-      let newButtonClass = `${this.buttonClass}--${index}`;
+      let newButtonClass = `${this.#buttonClass}--${index}`;
 
       this.btnCaseSwitch(btn);
       newButton.type = "button";
-      newButton.classList.add(this.buttonClass, newButtonClass);
+      newButton.classList.add(this.#buttonClass, newButtonClass);
       newButton.onclick = () => {
         this.onCustomClick(btn);
       };
 
-      if (this.isShift) {
-        newButton.classList.add(this.buttonShiftedClass);
+      if (this.#isShift) {
+        newButton.classList.add(this.#buttonShiftedClass);
       }
 
-      if (btn.hasOwnProperty(this.KEY_OPTION_IS_COLORED)) {
-        newButton.classList.add(this.buttonColoredClass);
+      if (btn.hasOwnProperty(this.#KEY_OPTION_IS_COLORED)) {
+        newButton.classList.add(this.#buttonColoredClass);
       }
 
-      if (btn.hasOwnProperty(this.KEY_OPTION_IS_SHOW)) {
+      if (btn.hasOwnProperty(this.#KEY_OPTION_IS_SHOW)) {
         newButton.append(
-          this.getGeneratedLayout("span", this.buttonSecondClass, btn.altSymbol)
+          this.getGeneratedLayout(
+            "span",
+            this.#buttonSecondClass,
+            btn.altSymbol
+          )
         );
       }
 
-      if (btn.hasOwnProperty(this.KEY_OPTION_IS_LANG_SWITCH)) {
-        this.languageShitchBtnsList.push(index);
+      if (btn.hasOwnProperty(this.#KEY_OPTION_IS_LANG_SWITCH)) {
+        this.#languageShitchBtnsList.push(index);
       }
 
-      if (btn.hasOwnProperty(this.KEY_OPTION_CUSTOM_CLASSES)) {
-        newButton.classList.add(...btn[this.KEY_OPTION_CUSTOM_CLASSES]);
+      if (btn.hasOwnProperty(this.#KEY_OPTION_CUSTOM_CLASSES)) {
+        newButton.classList.add(...btn[this.#KEY_OPTION_CUSTOM_CLASSES]);
       }
 
       newButton.append(
-        this.getGeneratedLayout("span", this.buttonFirstClass, btn.symbol)
+        this.getGeneratedLayout("span", this.#buttonFirstClass, btn.symbol)
       );
 
       // Custom states for some keys
       switch (btn.code) {
         case "CapsLock":
-          if (this.isCapsLock) {
-            newButton.classList.add(this.buttonActiveClass);
+          if (this.#isCapsLock) {
+            newButton.classList.add(this.#buttonActiveClass);
           }
           break;
 
         case "ShiftLeft":
         case "ShiftRight":
-          if (this.isShift) {
-            newButton.classList.add(this.buttonActiveClass);
+          if (this.#isShift) {
+            newButton.classList.add(this.#buttonActiveClass);
           }
           break;
 
         case "ControlLeft":
         case "ControlRight":
-          if (this.isCtrl) {
-            newButton.classList.add(this.buttonActiveClass);
+          if (this.#isCtrl) {
+            newButton.classList.add(this.#buttonActiveClass);
           }
           break;
       }
@@ -199,8 +202,8 @@ export class Keyboard {
 
   btnCaseSwitch(btn) {
     if (
-      (this.isCapsLock && !this.isShift) ||
-      (!this.isCapsLock && this.isShift)
+      (this.#isCapsLock && !this.#isShift) ||
+      (!this.#isCapsLock && this.#isShift)
     ) {
       btn.symbol = btn.symbol.toUpperCase();
     } else {
@@ -209,44 +212,45 @@ export class Keyboard {
   }
 
   keyEvent(e, isKeyUp) {
-    let btnIndex = this.KEYBOARD.findIndex((btn) => {
+    let btnIndex = this.#KEYBOARD.findIndex((btn) => {
       return btn.code === e.code;
     });
-    let btnSettings = this.KEYBOARD[btnIndex];
+    let btnSettings = this.#KEYBOARD[btnIndex];
+    let btnIndexClass = `.${this.#buttonClass}--${btnIndex}`;
 
     if (!e.repeat && isKeyUp) {
-      this.KEYBOARD[btnIndex].isPressed = false;
+      this.#KEYBOARD[btnIndex].isPressed = false;
       document
-        .querySelector(`.${this.buttonClass}--${btnIndex}`)
-        .classList.remove(this.buttonActiveClass);
+        .querySelector(btnIndexClass)
+        .classList.remove(this.#buttonActiveClass);
 
-      switch (this.KEYBOARD[btnIndex].code) {
+      switch (this.#KEYBOARD[btnIndex].code) {
         case "CapsLock":
-          this.KEYBOARD[btnIndex].isPressed = true;
-          this.isShift = false;
-          this.onCustomClick(this.KEYBOARD[btnIndex]);
+          this.#KEYBOARD[btnIndex].isPressed = true;
+          this.#isShift = false;
+          this.onCustomClick(this.#KEYBOARD[btnIndex]);
           break;
 
         case "ShiftLeft":
         case "ShiftRight":
           document
-            .querySelector(`.${this.buttonClass}--${btnIndex}`)
-            .classList.remove(this.buttonActiveClass);
+            .querySelector(btnIndexClass)
+            .classList.remove(this.#buttonActiveClass);
 
-          this.onCustomClick(this.KEYBOARD[btnIndex]);
+          this.onCustomClick(this.#KEYBOARD[btnIndex]);
           break;
       }
     } else {
-      this.KEYBOARD[btnIndex].isPressed = true;
+      this.#KEYBOARD[btnIndex].isPressed = true;
       document
-        .querySelector(`.${this.buttonClass}--${btnIndex}`)
-        .classList.add(this.buttonActiveClass);
+        .querySelector(btnIndexClass)
+        .classList.add(this.#buttonActiveClass);
 
-      switch (this.KEYBOARD[btnIndex].code) {
+      switch (this.#KEYBOARD[btnIndex].code) {
         case "ShiftLeft":
         case "ShiftRight":
-          this.isShift = false;
-          this.onCustomClick(this.KEYBOARD[btnIndex]);
+          this.#isShift = false;
+          this.onCustomClick(this.#KEYBOARD[btnIndex]);
           break;
       }
     }
@@ -254,24 +258,34 @@ export class Keyboard {
 
   onLanguageShitch(isCustomSwitch = false) {
     let isBtnPressed =
-      this.languageShitchBtnsList.every((index) => {
-        let btnObj = this.KEYBOARD[index];
+      this.#languageShitchBtnsList.every((index) => {
+        let btnObj = this.#KEYBOARD[index];
         return (
-          btnObj.hasOwnProperty(this.KEY_OPTION_IS_LANG_SWITCH) &&
+          btnObj.hasOwnProperty(this.#KEY_OPTION_IS_LANG_SWITCH) &&
           btnObj.isPressed
         );
       }) || isCustomSwitch;
 
     if (isBtnPressed) {
-      if (this.currentLanguage === this.LS_LANG_EN) {
-        this.currentLanguage = this.LS_LANG_RU;
-      } else {
-        this.currentLanguage = this.LS_LANG_EN;
+      switch (this.#currentLanguage) {
+        case this.#LS_LANG_EN:
+          this.#currentLanguage = this.#LS_LANG_RU;
+          break;
+
+        case this.#LS_LANG_RU:
+          this.#currentLanguage = this.#LS_LANG_EN;
+          break;
       }
 
-      localStorage.setItem(this.LS_LANG_NAME, this.currentLanguage);
-      this.KEYBOARD = this[`${this.currentLanguage}_KEYBOARD`];
-      this.KEYBOARD.forEach((btn) => {
+      // if (this.#currentLanguage === this.#LS_LANG_EN) {
+      //   this.#currentLanguage = this.#LS_LANG_RU;
+      // } else {
+      //   this.#currentLanguage = this.#LS_LANG_EN;
+      // }
+
+      localStorage.setItem(this.#LS_LANG_NAME, this.#currentLanguage);
+      this.#KEYBOARD = this[`${this.#currentLanguage}_KEYBOARD`];
+      this.#KEYBOARD.forEach((btn) => {
         btn.isPressed = false;
       });
       this.refreshLayout();
@@ -279,7 +293,7 @@ export class Keyboard {
   }
 
   onCustomClick(btn) {
-    let output = document.querySelector(`.${this.outputClass}`);
+    let output = document.querySelector(`.${this.#outputClass}`);
     let btnType = btn.code;
     let cursorPosition = output.selectionStart;
     let value = output.value;
@@ -341,8 +355,8 @@ export class Keyboard {
         break;
 
       case "CapsLock":
-        this.isCapsLock = !this.isCapsLock;
-        localStorage.setItem(this.LS_CAPS_NAME, 1 * this.isCapsLock);
+        this.#isCapsLock = !this.#isCapsLock;
+        localStorage.setItem(this.#LS_CAPS_NAME, 1 * this.#isCapsLock);
         this.refreshLayout();
         this.refreshShiftCtrlStates();
         break;
@@ -359,11 +373,11 @@ export class Keyboard {
 
       case "ShiftLeft":
       case "ShiftRight":
-        this.isShift = !this.isShift;
+        this.#isShift = !this.#isShift;
 
-        if (this.isShift && this.isCtrl) {
-          this.isCtrl = false;
-          this.isShift = false;
+        if (this.#isShift && this.#isCtrl) {
+          this.#isCtrl = false;
+          this.#isShift = false;
           this.onLanguageShitch(true);
         } else {
           this.refreshLayout();
@@ -372,11 +386,11 @@ export class Keyboard {
 
       case "ControlLeft":
       case "ControlRight":
-        this.isCtrl = !this.isCtrl;
+        this.#isCtrl = !this.#isCtrl;
 
-        if (this.isShift && this.isCtrl) {
-          this.isShift = false;
-          this.isCtrl = false;
+        if (this.#isShift && this.#isCtrl) {
+          this.#isShift = false;
+          this.#isCtrl = false;
           this.onLanguageShitch(true);
         } else {
           this.refreshLayout();
@@ -386,7 +400,7 @@ export class Keyboard {
       default:
         let inputValue = btn.symbol;
 
-        if (this.isShift && btn.hasOwnProperty("altSymbol")) {
+        if (this.#isShift && btn.hasOwnProperty("altSymbol")) {
           inputValue = btn.altSymbol;
         }
 
@@ -405,9 +419,9 @@ export class Keyboard {
   }
 
   refreshShiftCtrlStates() {
-    if (this.isShift || this.isCtrl) {
-      this.isShift = false;
-      this.isCtrl = false;
+    if (this.#isShift || this.#isCtrl) {
+      this.#isShift = false;
+      this.#isCtrl = false;
       this.refreshLayout();
     }
   }

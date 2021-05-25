@@ -1,4 +1,4 @@
-import { Keyboard } from "./keyboard/keyboard.js";
+import { Keyboard } from './keyboard/keyboard.js';
 
 const virtualKeyboard = new Keyboard();
 
